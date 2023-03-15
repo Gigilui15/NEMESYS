@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEMESYS", "NEMESYS.csproj", "{A7203EBF-926F-465A-8EDB-7E2DEA02C4DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7203EBF-926F-465A-8EDB-7E2DEA02C4DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7203EBF-926F-465A-8EDB-7E2DEA02C4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7203EBF-926F-465A-8EDB-7E2DEA02C4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7203EBF-926F-465A-8EDB-7E2DEA02C4DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC3FFA19-505C-4CFB-AAE0-44ED0B1827CC}
+	EndGlobalSection
+EndGlobal
