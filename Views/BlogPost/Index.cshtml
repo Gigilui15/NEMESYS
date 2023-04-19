@@ -1,0 +1,23 @@
+﻿@model NEMESYS.ViewModels.BlogPostListViewModel
+
+@{
+    ViewData["Title"] = "Blog Posts";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h2>Showing @Model.TotalEntries blog entries</h2>
+<div class="row">
+    @foreach (var blogPost in Model.BlogPosts)
+    {
+        <div class="card" style="width: 18rem;padding:20px; margin:20px;">
+            <img class="card-img-top" src="@blogPost.ImageUrl" alt="Image for @blogPost.Title" />
+            <div class="card-body">
+                <h3 class="card-title">@blogPost.Title</h3>
+                <p class="small">@blogPost.CreatedDate.ToShortDateString() in @blogPost.Category.Name</p>
+                <a href="#" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    }
+</div>
+
