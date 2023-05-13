@@ -5,7 +5,7 @@ namespace NEMESYS.Models.Repositories
 {
     public class MockNEMESYSRepository : INEMESYSRepository
     {
-        private List<BlogPost>? _posts;
+        private List<Report>? _posts;
         private List<Category>? _categories;
 
         public MockNEMESYSRepository()
@@ -17,7 +17,7 @@ namespace NEMESYS.Models.Repositories
 
             if (_posts == null)
             {
-                InitializeBlogPosts();
+                InitializeReports();
             }
         }
 
@@ -28,54 +28,58 @@ namespace NEMESYS.Models.Repositories
                 new Category()
                 {
                     Id = 1,
-                    Name = "Comedy"
+                    Name = "Accident"
                 },
                 new Category()
                 {
                     Id = 2,
-                    Name = "News"
-                }
-            };
-        }
-
-        private void InitializeBlogPosts()
-        {
-            _posts = new List<BlogPost>()
-            {
-                new BlogPost()
-                {
-                    Id = 1,
-                    CategoryId = 1,
-                    Title = "AGA Today",
-                    Content = "Today's AGA is characterized by a series of discussions and debates around ...",
-                    CreatedDate = DateTime.UtcNow,
-                    ImageUrl = "/images/seed1.jpg"
+                    Name = "Danger"
                 },
-                new BlogPost()
-                {
-                    Id = 2,
-                    CategoryId = 2,
-                    Title = "Traffic is incredible",
-                    Content = "Today's traffic can't be described using words. Only an image can do that ...",
-                    CreatedDate = DateTime.UtcNow.AddDays(-1),
-                    ImageUrl = "/images/seed2.jpg"
-                },
-                new BlogPost()
+                new Category()
                 {
                     Id = 3,
-                    CategoryId = 1,
-                    Title = "When is Spring really starting?",
-                    Content = "Clouds clouds all around us. I thought spring started already, but ...",
-                    CreatedDate = DateTime.UtcNow.AddDays(-2),
-                    ImageUrl = "/images/seed3.jpg"
+                    Name = "Health"
+                }
+            };
+        }
+
+        private void InitializeReports()
+        {
+            _posts = new List<Report>()
+            {
+                 new Report()
+                {
+                    Id = 1,
+                    Title = "Bumper-to-Bumper in RingRoad",
+                    Content = "Today at around 2.15pm a bumper-to-bumper incident caused a traffic jam...",
+                    CreatedDate = DateTime.Now,
+                    ImageUrl = "/images/uom.jpg",
+                    CategoryId = 1
+                },
+                new Report() {
+                    Id = 2,
+                    Title = "Hornet Nests Around Quad!",
+                    Content = "Two hornet nests have been spotted under...",
+                    CreatedDate = DateTime.Now,
+                    ImageUrl = "/images/quad.jpg",
+                    CategoryId = 2
+                },
+                new Report()
+                {
+                    Id = 3,
+                    Title = "AC Filters in the Faculty of ICT",
+                    Content = "Numerous students have been noticing the quality of air in...",
+                    CreatedDate = DateTime.Now,
+                    ImageUrl = "/images/ICT.jpg",
+                    CategoryId = 3
                 }
             };
         }
 
 
-        public IEnumerable<BlogPost> GetAllBlogPosts()
+        public IEnumerable<Report> GetAllReports()
         {
-            List<BlogPost> result = new List<BlogPost>();
+            List<Report> result = new List<Report>();
             foreach (var post in _posts)
             {
                 post.Category = _categories.FirstOrDefault(c => c.Id == post.CategoryId);
@@ -84,9 +88,9 @@ namespace NEMESYS.Models.Repositories
             return result;
         }
 
-        public BlogPost GetBlogPostById(int blogPostId)
+        public Report GetReportById(int ReportId)
         {
-            var post = _posts.FirstOrDefault(p => p.Id == blogPostId); //if not found, it returns null
+            var post = _posts.FirstOrDefault(p => p.Id == ReportId); //if not found, it returns null
             var category = _categories.FirstOrDefault(c => c.Id == post.CategoryId);
             post.Category = category;
             return post;
@@ -100,7 +104,7 @@ namespace NEMESYS.Models.Repositories
         public Category GetCategoryById(int categoryId)
         {
             var category = _categories.FirstOrDefault(c => c.Id == categoryId);
-            category.BlogPosts = _posts.Where(p => p.CategoryId == categoryId).ToList();
+            category.Reports = _posts.Where(p => p.CategoryId == categoryId).ToList();
             return category;
         }
 

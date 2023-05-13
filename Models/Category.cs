@@ -8,6 +8,6 @@ namespace NEMESYS.Models
         public string Name { get; set; }
 
         //Collection navigation property
-        public List<BlogPost> BlogPosts { get; set; }
+        public List<Report> Reports { get; set; }
     }
 }

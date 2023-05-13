@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using NEMESYS.Data;
 using NEMESYS.Models.Interfaces;
 using NEMESYS.Models.Repositories;
+using System;
 
 namespace NEMESYS
 {
@@ -10,6 +13,11 @@ namespace NEMESYS
             //Services configuration
             var builder = WebApplication.CreateBuilder(args);
             //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine
+
+            //This service could be varied by environment - passing different connection strings as required
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new
+                    InvalidOperationException("Connection string for AppDbContext not found")));
 
             //Returning a repository depending on the environment
             if (builder.Environment.IsDevelopment())

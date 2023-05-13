@@ -2,7 +2,7 @@
 
 namespace NEMESYS.Models
 {
-    public class BlogPost
+    public class Report
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }

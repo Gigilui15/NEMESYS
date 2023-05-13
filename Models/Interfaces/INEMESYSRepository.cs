@@ -4,8 +4,8 @@ namespace NEMESYS.Models.Interfaces
 {
     public interface INEMESYSRepository
     {
-        IEnumerable<BlogPost> GetAllBlogPosts();
-        BlogPost GetBlogPostById(int blogPostId);
+        IEnumerable<Report> GetAllReports();
+        Report GetReportById(int ReportId);
 
         IEnumerable<Category> GetAllCategories();
         Category GetCategoryById(int categoryId);

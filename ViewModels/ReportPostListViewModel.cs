@@ -2,10 +2,10 @@
 
 namespace NEMESYS.ViewModels
 {
-    public class BlogPostListViewModel
+    public class ReportPostListViewModel
     {
         public int TotalEntries { get; set; }
-        public IEnumerable<BlogPost> BlogPosts { get; set; }
+        public IEnumerable<Report> ReportPost { get; set; }
 
     }
 }
