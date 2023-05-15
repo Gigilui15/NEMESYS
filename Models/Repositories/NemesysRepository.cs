@@ -38,6 +38,7 @@ namespace NEMESYS.Models.Repositories
             {
                 existingReportPost.Title = reportPost.Title;
                 existingReportPost.Content = reportPost.Content;
+                existingReportPost.UpdatedDate = reportPost.UpdatedDate;
                 existingReportPost.ImageUrl = reportPost.ImageUrl;
                 existingReportPost.CategoryId = reportPost.CategoryId;
 

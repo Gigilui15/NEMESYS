@@ -201,7 +201,7 @@ namespace NEMESYS.Controllers
                     modelToUpdate.Title = updatedReportPost.Title;
                     modelToUpdate.Content = updatedReportPost.Content;
                     modelToUpdate.ImageUrl = imageUrl;
-                    //modelToUpdate.UpdatedDate = DateTime.Now;
+                    modelToUpdate.UpdatedDate = DateTime.Now;
                     modelToUpdate.CategoryId = updatedReportPost.CategoryId;
 
                     _NEMESYSRepository.UpdateReportPost(modelToUpdate);

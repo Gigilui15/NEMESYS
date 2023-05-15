@@ -45,6 +45,7 @@ namespace NEMESYS.Data
                     Title = "Bumper-to-Bumper in RingRoad",
                     Content = "Today at around 2.15pm a bumper-to-bumper incident caused a traffic jam...",
                     CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.UtcNow,
                     ImageUrl = "/images/uom.jpg",
                     CategoryId = 1
                 },
@@ -53,6 +54,7 @@ namespace NEMESYS.Data
                     Title = "Hornet Nests Around Quad!",
                     Content = "Two hornet nests have been spotted under...",
                     CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.UtcNow.AddDays(-1),
                     ImageUrl = "/images/quad.jpg",
                     CategoryId = 2
                 },
@@ -62,10 +64,11 @@ namespace NEMESYS.Data
                     Title = "AC Filters in the Faculty of ICT",
                     Content = "Numerous students have been noticing the quality of air in...",
                     CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.UtcNow.AddDays(-2),
                     ImageUrl = "/images/ICT.jpg",
                     CategoryId = 3
                 }
-                );
+                ); ;
         }
     }
 }
