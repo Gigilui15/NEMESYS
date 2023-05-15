@@ -1,24 +1,22 @@
-﻿@model NEMESYS.ViewModels.ReportPostListViewModel
+﻿@model ReportPostListViewModel
 
 @{
-    ViewData["Title"] = "Reports";
+    ViewData["Title"] = "All Reports";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<h2>Showing @Model.TotalEntries Active Reports</h2>
+<h2>Showing @Model.TotalEntries Published Reports</h2>
 <div class="row">
-    @foreach (var reportPost in Model.ReportPost)
+    @foreach (var reportPost in Model.ReportPosts)
     {
         <div class="card" style="width: 18rem;padding:20px; margin:20px;">
             <img class="card-img-top" src="@reportPost.ImageUrl" alt="Image for @reportPost.Title" />
             <div class="card-body">
                 <h3 class="card-title">@reportPost.Title</h3>
-                <p class="small">Category: @reportPost.Category.Name</p>
-                <p class="small">@reportPost.CreatedDate.ToShortDateString()</p>
-                <a href="#" class="btn btn-primary">Details</a>
+                <p class="small">@reportPost.CreatedDate.ToShortDateString() in @reportPost.Category.Name</p>
+                <a asp-controller="Report" asp-action="Details" asp-route-id="@reportPost.Id" class="btn btn-primary">Details</a>
             </div>
         </div>
     }
 </div>
-

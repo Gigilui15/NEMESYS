@@ -75,8 +75,6 @@ namespace NEMESYS.Models.Repositories
                 }
             };
         }
-
-
         public IEnumerable<Report> GetAllReports()
         {
             List<Report> result = new List<Report>();
@@ -94,6 +92,25 @@ namespace NEMESYS.Models.Repositories
             var category = _categories.FirstOrDefault(c => c.Id == post.CategoryId);
             post.Category = category;
             return post;
+        }
+
+        public void CreateReportPost(Report reportPost)
+        {
+            reportPost.Id = _posts.Count + 1;
+            _posts.Add(reportPost);
+        }
+
+        public void UpdateReportPost(Report reportPost)
+        {
+            var existingBlogPost = _posts.FirstOrDefault(p => p.Id == reportPost.Id);
+            if (existingBlogPost != null)
+            {
+                //No need to update CreatedDate (id of course won't be changed)
+                existingBlogPost.ImageUrl = reportPost.ImageUrl;
+                existingBlogPost.Title = reportPost.Title;
+                existingBlogPost.Content = reportPost.Content;
+                existingBlogPost.CategoryId = reportPost.CategoryId;
+            }
         }
 
         public IEnumerable<Category> GetAllCategories()

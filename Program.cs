@@ -22,13 +22,13 @@ namespace NEMESYS
             //Returning a repository depending on the environment
             if (builder.Environment.IsDevelopment())
             {
-                builder.Services.AddTransient<INEMESYSRepository, MockNEMESYSRepository>();
+                builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
             }
 
             if (builder.Environment.IsProduction())
             {
                 //This would be pointing to a different implementation of the repo
-                builder.Services.AddTransient<INEMESYSRepository, MockNEMESYSRepository>();
+                builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
             }
 
 
