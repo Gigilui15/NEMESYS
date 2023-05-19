@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NEMESYS.Data;
 using NEMESYS.Models.Interfaces;
@@ -19,18 +20,42 @@ namespace NEMESYS
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new
                     InvalidOperationException("Connection string for AppDbContext not found")));
 
-            //Returning a repository depending on the environment
-            if (builder.Environment.IsDevelopment())
+            //These are only for illustration purposes only (only use what is required)
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
             {
-                builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
-            }
+                options.SignIn.RequireConfirmedAccount = true;
 
-            if (builder.Environment.IsProduction())
+                // Password settings. (note - complexity not always == security -> consider passphrases)
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+
+
+            }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
             {
-                //This would be pointing to a different implementation of the repo
-                builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
-            }
+                //Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.SlidingExpiration = true;
 
+            });
+
+            builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
 
             builder.Services.AddControllersWithViews();
 
@@ -51,9 +76,15 @@ namespace NEMESYS
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.MapRazorPages();
             app.Run();
         }
     }
