@@ -2,12 +2,15 @@
 using NEMESYS.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using NEMESYS.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace NEMESYS.Controllers
 {
     public class ReportController : Controller
     {
         private readonly INEMESYSRepository _NEMESYSRepository;
+        private readonly UserManager<IdentityUser> _userManager;
 
         //Using constructor dependency injection for the controller (i.e. when the controller is instnatiated, it will receive an instance of INEMESYSRepository according to the config in Program.cs
         public ReportController(INEMESYSRepository NEMESYSRepository)
@@ -69,6 +72,7 @@ namespace NEMESYS.Controllers
             }
 
             [HttpGet]
+            [Authorize]
             public IActionResult Create()
             {
                 //Load all categories and create a list of CategoryViewModel
@@ -89,6 +93,7 @@ namespace NEMESYS.Controllers
             }
 
             [HttpPost]
+            [Authorize]
             public IActionResult Create([Bind("Title, Content, ImageToUpload, CategoryId")] EditReportPostViewModel newReportPost)
             {
                 if (ModelState.IsValid)
@@ -113,7 +118,8 @@ namespace NEMESYS.Controllers
                         Content = newReportPost.Content,
                         CreatedDate = DateTime.UtcNow,
                         ImageUrl = "/images/reports/" + fileName,
-                        CategoryId = newReportPost.CategoryId
+                        CategoryId = newReportPost.CategoryId,
+                        //UserId = _userManager.GetUserId(),
                     };
 
                     _NEMESYSRepository.CreateReportPost(report);
@@ -138,6 +144,7 @@ namespace NEMESYS.Controllers
             }
 
             [HttpGet]
+            [Authorize]
             public IActionResult Edit(int id)
             {
                 var existingReportPost = _NEMESYSRepository.GetReportById(id);
@@ -169,6 +176,7 @@ namespace NEMESYS.Controllers
             }
 
             [HttpPost]
+            [Authorize]
             public IActionResult Edit([FromRoute] int id, [Bind("Id, Title, Content, ImageToUpload, CategoryId")] EditReportPostViewModel updatedReportPost)
             {
                 var modelToUpdate = _NEMESYSRepository.GetReportById(id);
