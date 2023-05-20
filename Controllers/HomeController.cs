@@ -14,7 +14,6 @@ namespace NEMESYS.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult About()
         {
             return View();
