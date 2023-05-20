@@ -14,11 +14,17 @@ namespace NEMESYS
             //Services configuration
             var builder = WebApplication.CreateBuilder(args);
             //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine
-
+            var configuration = builder.Configuration;
             //This service could be varied by environment - passing different connection strings as required
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new
                     InvalidOperationException("Connection string for AppDbContext not found")));
+
+            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+            });
 
             //These are only for illustration purposes only (only use what is required)
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
