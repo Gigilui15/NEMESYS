@@ -2,7 +2,73 @@
     ViewData["Title"] = "Home Page";
 }
 
+<link rel="stylesheet" href="~/css/site.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+
 <div class="text-center">
     <h1 class="display-4">Welcome to NEMESYS</h1>
     <p>The Official Reporting System for the University Of Malta</p>
 </div>
+<body>
+    <div id="report-carousel" class="carousel slide" data-bs-ride="carousel">
+
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        </div>
+
+        <div class="carousel-inner">
+
+            <div class="carousel-item active c-item">
+                <img class="d-block w-100 card-img" src="/images/quad.jpg" alt="First slide">
+                <div class="carousel-caption top-0 mt-4">
+                    <p class="mt-5 fs-3 text-uppercase">The only reporting flatform you need</p>
+                    <h1 class="display-1 fw-bolder text-capitalize">NEMESYS</h1>
+
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>The following topics can be found on our website</h5>
+                        </div>
+                </div>
+            </div>
+
+            <div class="carousel-item c-item">
+                <img class="d-block w-100 c-img" src="/images/pic1.jpg" alt="Second slide">
+                <div class="carousel-caption top-0 mt-4">
+                    <!--<p class="mt-5 fs-3 text-uppercase">Danger on Campus</p>-->
+                    <h1 class="display-1 mt-5 fw-bolder text-capitalize">danger</h1>
+                </div>
+            </div>
+
+            <div class="carousel-item c-item">
+                <img class="d-block w-100 c-img" src="/images/uom.jpg" alt="Third slide">
+                <div class="carousel-caption top-0 mt-4">
+                    <!--<p class="mt-5 fs-3 text-uppercase">Accidents on Campus</p> -->
+                    <h1 class="display-1 mt-5 fw-bolder text-capitalize">accident</h1>
+                </div>
+            </div>
+
+            <div class="carousel-item c-item">
+                <img class="d-block w-100 c-img" src="/images/pic3.jpg" alt="Fourth slide">
+                <div class="carousel-caption top-0 mt-4">
+                    <!-- <p class="mt-5 fs-3 text-uppercase">Health on Campus</p> -->
+                    <h1 class="display-1 mt-5 fw-bolder text-capitalize">health</h1>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#report-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#report-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+</body>

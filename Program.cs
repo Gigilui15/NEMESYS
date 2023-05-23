@@ -20,11 +20,11 @@ namespace NEMESYS
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new
                     InvalidOperationException("Connection string for AppDbContext not found")));
 
-            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-            {
-                googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-            });
+          //  builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+          //  {
+          //      googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+         //       googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+           // });
 
             //These are only for illustration purposes only (only use what is required)
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
