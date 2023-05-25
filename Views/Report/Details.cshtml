@@ -4,14 +4,14 @@
     ViewData["Title"] = Model.Title;
 }
 
-<h1>@Model.Title</h1>
-<div class="card" style="width: 90%;padding:20px; margin:20px;">
+<h1 class="text-light">@Model.Title</h1>
+<div class="card" style="width: 90%;padding:20px; margin:20px;background-color:#294169;">
     <img class="card-img-top" src="@Model.ImageUrl" alt="Image for @Model.Title" />
-    <div class="card-body">
-        <h3 class="card-title">@Model.Title</h3>
-        <p class="card-text">@Model.Content</p>
-        <p class="small">In @Model.Category.Name</p>
-        <p class="small">@Model.CreatedDate.ToShortDateString()</p>
+    <div class="card-body" style="background-color:#294169;">
+        <h3 class="card-title text-light">@Model.Title</h3>
+        <p class="card-text text-light">@Model.Content</p>
+        <p class="small text-light">In @Model.Category.Name</p>
+        <p class="small text-light">@Model.CreatedDate.ToShortDateString()</p>
     </div>
 </div>
 

@@ -4,17 +4,17 @@
     ViewData["Title"] = "All Reports";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-light">@ViewData["Title"]</h1>
 
-<h2>Showing @Model.TotalEntries Published Reports</h2>
+<h2 class ="text-light">Showing @Model.TotalEntries Published Reports</h2>
 <div class="row">
     @foreach (var reportPost in Model.ReportPosts)
     {
-        <div class="card" style="width: 18rem;padding:20px; margin:20px;">
+        <div class="card" style="width: 18rem;padding:20px; margin:20px;background-color:#294169">
             <img class="card-img-top" src="@reportPost.ImageUrl" alt="Image for @reportPost.Title" />
             <div class="card-body">
-                <h3 class="card-title">@reportPost.Title</h3>
-                <p class="small">@reportPost.CreatedDate.ToShortDateString() in @reportPost.Category.Name</p>
+                <h3 class="card-title text-light">@reportPost.Title</h3>
+                <p class="small text-light">@reportPost.CreatedDate.ToShortDateString() in @reportPost.Category.Name</p>
                 <a asp-controller="Report" asp-action="Details" asp-route-id="@reportPost.Id" class="btn btn-primary">Details</a>
             </div>
         </div>
