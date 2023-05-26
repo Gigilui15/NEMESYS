@@ -12,3 +12,12 @@
     --bs-body-bg: #0F1724;
 }
 
+.google-button {
+    padding: 15px;
+    background-color:white
+}
+
+.google-button img {
+    width: 100px; /* Adjust the size as needed */
+    height: 40px; /* Adjust the size as needed */
+}
