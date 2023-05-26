@@ -53,6 +53,7 @@ namespace NEMESYS.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult Details(int id)
         {
             var reportPost = _NEMESYSRepository.GetReportById(id);

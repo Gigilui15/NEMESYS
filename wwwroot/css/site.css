@@ -13,11 +13,11 @@
 }
 
 .google-button {
-    padding: 15px;
+    padding: 10px;
     background-color:white
 }
 
 .google-button img {
-    width: 100px; /* Adjust the size as needed */
-    height: 40px; /* Adjust the size as needed */
+    width: 90px; /* Adjust the size as needed */
+    height: 30px; /* Adjust the size as needed */
 }
