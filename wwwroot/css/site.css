@@ -1,0 +1,14 @@
+﻿.c-item {
+    height: 700px;
+}
+
+.c-img {
+    height:100%;
+    object-fit:cover;
+    filter: brightness(0.6);
+}
+
+:root {
+    --bs-body-bg: #0F1724;
+}
+
