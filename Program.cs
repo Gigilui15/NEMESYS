@@ -25,11 +25,11 @@ namespace NEMESYS
                 builder.Configuration.AddJsonFile($"appsettings.{Environment.MachineName}.json", true, true);
             }
 
-          //  builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-          //  {
-          //      googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-         //       googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-           // });
+            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+            });
 
             //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine
 
