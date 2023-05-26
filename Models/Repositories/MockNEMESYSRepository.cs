@@ -53,16 +53,20 @@ namespace NEMESYS.Models.Repositories
                     Title = "Bumper-to-Bumper in RingRoad",
                     Content = "Today at around 2.15pm a bumper-to-bumper incident caused a traffic jam...",
                     CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.UtcNow,
                     ImageUrl = "/images/uom.jpg",
-                    CategoryId = 1
+                    CategoryId = 1,
+                    UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002"
                 },
                 new Report() {
                     Id = 2,
                     Title = "Hornet Nests Around Quad!",
                     Content = "Two hornet nests have been spotted under...",
                     CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.UtcNow.AddDays(-1),
                     ImageUrl = "/images/quad.jpg",
-                    CategoryId = 2
+                    CategoryId = 2,
+                    UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002"
                 },
                 new Report()
                 {
@@ -70,8 +74,10 @@ namespace NEMESYS.Models.Repositories
                     Title = "AC Filters in the Faculty of ICT",
                     Content = "Numerous students have been noticing the quality of air in...",
                     CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.UtcNow.AddDays(-2),
                     ImageUrl = "/images/ICT.jpg",
-                    CategoryId = 3
+                    CategoryId = 3,
+                    UserId = "1e0a2010-f9aa-11ed-be56-0242ac120002"
                 }
             };
         }

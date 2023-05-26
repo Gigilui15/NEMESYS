@@ -41,13 +41,12 @@ namespace NEMESYS.Models.Repositories
                 existingReportPost.UpdatedDate = reportPost.UpdatedDate;
                 existingReportPost.ImageUrl = reportPost.ImageUrl;
                 existingReportPost.CategoryId = reportPost.CategoryId;
+                existingReportPost.UserId = reportPost.UserId;
 
                 _appDbContext.Entry(existingReportPost).State = EntityState.Modified;
                 _appDbContext.SaveChanges();
             }
         }
-
-
 
         public IEnumerable<Category> GetAllCategories()
         {

@@ -15,6 +15,11 @@ namespace NEMESYS.Models
         public int CategoryId { get; set; }
         //Reference navigation property
         public Category Category { get; set; }
+
+        //Foreign Key - navigation property name + key property name
+        public string UserId { get; set; }
+        //Reference navigation property
+        public ApplicationUser User { get; set; }
     }
 
 }

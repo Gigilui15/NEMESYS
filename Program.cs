@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NEMESYS.Data;
+using NEMESYS.Models;
 using NEMESYS.Models.Interfaces;
 using NEMESYS.Models.Repositories;
 using System;
@@ -13,12 +14,16 @@ namespace NEMESYS
         {
             //Services configuration
             var builder = WebApplication.CreateBuilder(args);
+
             //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine
             var configuration = builder.Configuration;
-            //This service could be varied by environment - passing different connection strings as required
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new
-                    InvalidOperationException("Connection string for AppDbContext not found")));
+
+            //Overriding with dev machine specific configs
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Configuration.AddJsonFile("appsettings.json", false, true);
+                builder.Configuration.AddJsonFile($"appsettings.{Environment.MachineName}.json", true, true);
+            }
 
             builder.Services.AddAuthentication().AddGoogle(googleOptions =>
             {
@@ -26,8 +31,15 @@ namespace NEMESYS
                 googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
             });
 
+            //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine
+
+            //This service could be varied by environment - passing different connection strings as required
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new
+                    InvalidOperationException("Connection string for AppDbContext not found")));
+
             //These are only for illustration purposes only (only use what is required)
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
 
@@ -50,7 +62,9 @@ namespace NEMESYS
                 options.User.RequireUniqueEmail = true;
 
 
-            }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
@@ -61,7 +75,9 @@ namespace NEMESYS
 
             });
 
+            //Let's keep it simple for now
             builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
+
 
             builder.Services.AddControllersWithViews();
 

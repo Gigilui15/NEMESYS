@@ -3,23 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NEMESYS.Data;
 
 #nullable disable
 
-namespace NEMESYS.Data.Migrations
+namespace NEMESYS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230513155734_reDesign")]
-    partial class reDesign
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.13")
+                .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -49,6 +47,22 @@ namespace NEMESYS.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b582190c-f9af-11ed-be56-0242ac120002",
+                            ConcurrencyStamp = "1",
+                            Name = "Reporter",
+                            NormalizedName = "REP"
+                        },
+                        new
+                        {
+                            Id = "2e33b0ea-f9b0-11ed-be56-0242ac120002",
+                            ConcurrencyStamp = "1",
+                            Name = "Investigator",
+                            NormalizedName = "INV"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -76,7 +90,109 @@ namespace NEMESYS.Data.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002",
+                            RoleId = "2e33b0ea-f9b0-11ed-be56-0242ac120002"
+                        },
+                        new
+                        {
+                            UserId = "1e0a2010-f9aa-11ed-be56-0242ac120002",
+                            RoleId = "2e33b0ea-f9b0-11ed-be56-0242ac120002"
+                        },
+                        new
+                        {
+                            UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002",
+                            RoleId = "2e33b0ea-f9b0-11ed-be56-0242ac120002"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("NEMESYS.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -118,6 +234,10 @@ namespace NEMESYS.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ReporterAlias")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -139,87 +259,62 @@ namespace NEMESYS.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.HasData(
+                        new
+                        {
+                            Id = "19e2d6a8-f9aa-11ed-be56-0242ac120002",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2d9e4cd0-42bf-4ffa-ae55-db32bffc8013",
+                            Email = "investigator@mail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@MAIL.COM",
+                            NormalizedUserName = "INVESTIGATOR@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIUurcQg9ZxwLqspNjSjGnLzvT4SRUemP0A7fjGc52NypThLqvoFC8W7/ZadAjLCtg==",
+                            PhoneNumber = "",
+                            PhoneNumberConfirmed = false,
+                            ReporterAlias = "Investigator A",
+                            SecurityStamp = "ef4bc627-7eac-41bb-9738-db9dee36c8f2",
+                            TwoFactorEnabled = false,
+                            UserName = "investigator@mail.com"
+                        },
+                        new
+                        {
+                            Id = "1e0a2010-f9aa-11ed-be56-0242ac120002",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "839b2e20-cbd5-436b-bbc5-4e774c65b200",
+                            Email = "investigator@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "INVESTIGATOR@GMAIL.COM",
+                            NormalizedUserName = "INVESTIGATOR@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGAHrQk7WDumY/BHU/7LQpr8pphFEj+BLQmhpvp2DGFU3/Hm4jwxaIDv06StusVi3A==",
+                            PhoneNumber = "",
+                            PhoneNumberConfirmed = false,
+                            ReporterAlias = "Investigator B",
+                            SecurityStamp = "48992d1c-dea7-4df1-a70d-802788c47869",
+                            TwoFactorEnabled = false,
+                            UserName = "investigator@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "2f2e610c-f9ab-11ed-be56-0242ac120002",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ba68365a-d278-41ed-a30c-06bfc96fa305",
+                            Email = "tester@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "TESTER@GMAIL.COM",
+                            NormalizedUserName = "TESTER@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAQhhDSpHDgmvprQKzP2Sj6CNPGgCGr3TtP3ATOyASNMruJhZ+jgMOqSjEFhFz+ePg==",
+                            PhoneNumber = "",
+                            PhoneNumberConfirmed = false,
+                            ReporterAlias = "Tester",
+                            SecurityStamp = "027dcb04-a3f9-448e-84b8-4d28e0f64a6f",
+                            TwoFactorEnabled = false,
+                            UserName = "tester@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("NEMESYS.Models.Category", b =>
@@ -282,9 +377,18 @@ namespace NEMESYS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reports");
 
@@ -294,27 +398,33 @@ namespace NEMESYS.Data.Migrations
                             Id = 1,
                             CategoryId = 1,
                             Content = "Today at around 2.15pm a bumper-to-bumper incident caused a traffic jam...",
-                            CreatedDate = new DateTime(2023, 5, 13, 17, 57, 34, 440, DateTimeKind.Local).AddTicks(85),
+                            CreatedDate = new DateTime(2023, 5, 26, 18, 7, 27, 236, DateTimeKind.Local).AddTicks(896),
                             ImageUrl = "/images/uom.jpg",
-                            Title = "Bumper-to-Bumper in RingRoad"
+                            Title = "Bumper-to-Bumper in RingRoad",
+                            UpdatedDate = new DateTime(2023, 5, 26, 16, 7, 27, 236, DateTimeKind.Utc).AddTicks(931),
+                            UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002"
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 2,
                             Content = "Two hornet nests have been spotted under...",
-                            CreatedDate = new DateTime(2023, 5, 13, 17, 57, 34, 440, DateTimeKind.Local).AddTicks(123),
+                            CreatedDate = new DateTime(2023, 5, 26, 18, 7, 27, 236, DateTimeKind.Local).AddTicks(933),
                             ImageUrl = "/images/quad.jpg",
-                            Title = "Hornet Nests Around Quad!"
+                            Title = "Hornet Nests Around Quad!",
+                            UpdatedDate = new DateTime(2023, 5, 25, 16, 7, 27, 236, DateTimeKind.Utc).AddTicks(935),
+                            UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002"
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 3,
                             Content = "Numerous students have been noticing the quality of air in...",
-                            CreatedDate = new DateTime(2023, 5, 13, 17, 57, 34, 440, DateTimeKind.Local).AddTicks(126),
+                            CreatedDate = new DateTime(2023, 5, 26, 18, 7, 27, 236, DateTimeKind.Local).AddTicks(936),
                             ImageUrl = "/images/ICT.jpg",
-                            Title = "AC Filters in the Faculty of ICT"
+                            Title = "AC Filters in the Faculty of ICT",
+                            UpdatedDate = new DateTime(2023, 5, 24, 16, 7, 27, 236, DateTimeKind.Utc).AddTicks(938),
+                            UserId = "1e0a2010-f9aa-11ed-be56-0242ac120002"
                         });
                 });
 
@@ -329,7 +439,7 @@ namespace NEMESYS.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("NEMESYS.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -338,7 +448,7 @@ namespace NEMESYS.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("NEMESYS.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -353,7 +463,7 @@ namespace NEMESYS.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("NEMESYS.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -362,7 +472,7 @@ namespace NEMESYS.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("NEMESYS.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -377,7 +487,15 @@ namespace NEMESYS.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("NEMESYS.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NEMESYS.Models.Category", b =>

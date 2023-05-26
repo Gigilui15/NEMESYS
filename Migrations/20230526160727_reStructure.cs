@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace NEMESYS.Data.Migrations
+namespace NEMESYS.Migrations
 {
-    public partial class IdentityAdded : Migration
+    public partial class reStrucutre : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,7 @@ namespace NEMESYS.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReporterAlias = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -178,11 +179,18 @@ namespace NEMESYS.Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reports_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -192,34 +200,53 @@ namespace NEMESYS.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "Accident" });
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "2e33b0ea-f9b0-11ed-be56-0242ac120002", "1", "Investigator", "INV" },
+                    { "b582190c-f9af-11ed-be56-0242ac120002", "1", "Reporter", "REP" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ReporterAlias", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "19e2d6a8-f9aa-11ed-be56-0242ac120002", 0, "2d9e4cd0-42bf-4ffa-ae55-db32bffc8013", "investigator@mail.com", true, false, null, "ADMIN@MAIL.COM", "INVESTIGATOR@MAIL.COM", "AQAAAAEAACcQAAAAEIUurcQg9ZxwLqspNjSjGnLzvT4SRUemP0A7fjGc52NypThLqvoFC8W7/ZadAjLCtg==", "", false, "Investigator A", "ef4bc627-7eac-41bb-9738-db9dee36c8f2", false, "investigator@mail.com" },
+                    { "1e0a2010-f9aa-11ed-be56-0242ac120002", 0, "839b2e20-cbd5-436b-bbc5-4e774c65b200", "investigator@gmail.com", true, false, null, "INVESTIGATOR@GMAIL.COM", "INVESTIGATOR@GMAIL.COM", "AQAAAAEAACcQAAAAEGAHrQk7WDumY/BHU/7LQpr8pphFEj+BLQmhpvp2DGFU3/Hm4jwxaIDv06StusVi3A==", "", false, "Investigator B", "48992d1c-dea7-4df1-a70d-802788c47869", false, "investigator@gmail.com" },
+                    { "2f2e610c-f9ab-11ed-be56-0242ac120002", 0, "ba68365a-d278-41ed-a30c-06bfc96fa305", "tester@gmail.com", true, false, null, "TESTER@GMAIL.COM", "TESTER@GMAIL.COM", "AQAAAAEAACcQAAAAEAQhhDSpHDgmvprQKzP2Sj6CNPGgCGr3TtP3ATOyASNMruJhZ+jgMOqSjEFhFz+ePg==", "", false, "Tester", "027dcb04-a3f9-448e-84b8-4d28e0f64a6f", false, "tester@gmail.com" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { 2, "Danger" });
+                values: new object[,]
+                {
+                    { 1, "Accident" },
+                    { 2, "Danger" },
+                    { 3, "Health" }
+                });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 3, "Health" });
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "2e33b0ea-f9b0-11ed-be56-0242ac120002", "19e2d6a8-f9aa-11ed-be56-0242ac120002" },
+                    { "2e33b0ea-f9b0-11ed-be56-0242ac120002", "1e0a2010-f9aa-11ed-be56-0242ac120002" },
+                    { "2e33b0ea-f9b0-11ed-be56-0242ac120002", "2f2e610c-f9ab-11ed-be56-0242ac120002" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Reports",
-                columns: new[] { "Id", "CategoryId", "Content", "CreatedDate", "ImageUrl", "Title", "UpdatedDate" },
-                values: new object[] { 1, 1, "Today at around 2.15pm a bumper-to-bumper incident caused a traffic jam...", new DateTime(2023, 5, 19, 22, 27, 53, 959, DateTimeKind.Local).AddTicks(2529), "/images/uom.jpg", "Bumper-to-Bumper in RingRoad", new DateTime(2023, 5, 19, 20, 27, 53, 959, DateTimeKind.Utc).AddTicks(2560) });
-
-            migrationBuilder.InsertData(
-                table: "Reports",
-                columns: new[] { "Id", "CategoryId", "Content", "CreatedDate", "ImageUrl", "Title", "UpdatedDate" },
-                values: new object[] { 2, 2, "Two hornet nests have been spotted under...", new DateTime(2023, 5, 19, 22, 27, 53, 959, DateTimeKind.Local).AddTicks(2561), "/images/quad.jpg", "Hornet Nests Around Quad!", new DateTime(2023, 5, 18, 20, 27, 53, 959, DateTimeKind.Utc).AddTicks(2564) });
-
-            migrationBuilder.InsertData(
-                table: "Reports",
-                columns: new[] { "Id", "CategoryId", "Content", "CreatedDate", "ImageUrl", "Title", "UpdatedDate" },
-                values: new object[] { 3, 3, "Numerous students have been noticing the quality of air in...", new DateTime(2023, 5, 19, 22, 27, 53, 959, DateTimeKind.Local).AddTicks(2565), "/images/ICT.jpg", "AC Filters in the Faculty of ICT", new DateTime(2023, 5, 17, 20, 27, 53, 959, DateTimeKind.Utc).AddTicks(2567) });
+                columns: new[] { "Id", "CategoryId", "Content", "CreatedDate", "ImageUrl", "Title", "UpdatedDate", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1, "Today at around 2.15pm a bumper-to-bumper incident caused a traffic jam...", new DateTime(2023, 5, 26, 18, 7, 27, 236, DateTimeKind.Local).AddTicks(896), "/images/uom.jpg", "Bumper-to-Bumper in RingRoad", new DateTime(2023, 5, 26, 16, 7, 27, 236, DateTimeKind.Utc).AddTicks(931), "2f2e610c-f9ab-11ed-be56-0242ac120002" },
+                    { 2, 2, "Two hornet nests have been spotted under...", new DateTime(2023, 5, 26, 18, 7, 27, 236, DateTimeKind.Local).AddTicks(933), "/images/quad.jpg", "Hornet Nests Around Quad!", new DateTime(2023, 5, 25, 16, 7, 27, 236, DateTimeKind.Utc).AddTicks(935), "19e2d6a8-f9aa-11ed-be56-0242ac120002" },
+                    { 3, 3, "Numerous students have been noticing the quality of air in...", new DateTime(2023, 5, 26, 18, 7, 27, 236, DateTimeKind.Local).AddTicks(936), "/images/ICT.jpg", "AC Filters in the Faculty of ICT", new DateTime(2023, 5, 24, 16, 7, 27, 236, DateTimeKind.Utc).AddTicks(938), "1e0a2010-f9aa-11ed-be56-0242ac120002" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -264,6 +291,11 @@ namespace NEMESYS.Data.Migrations
                 name: "IX_Reports_CategoryId",
                 table: "Reports",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_UserId",
+                table: "Reports",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

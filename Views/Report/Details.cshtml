@@ -1,4 +1,6 @@
-﻿@model ReportPostViewModel
+﻿@using Microsoft.AspNetCore.Identity;
+@model ReportPostViewModel
+@inject UserManager<NEMESYS.Models.ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = Model.Title;
@@ -12,9 +14,16 @@
         <p class="card-text">@Model.Content</p>
         <p class="small">In @Model.Category.Name</p>
         <p class="small">@Model.CreatedDate.ToShortDateString()</p>
+        <p class="small">By @Model.Reporter.Name</p>
     </div>
 </div>
 
-<a asp-controller="Report" asp-action="Index" class="btn btn-primary">Back to list</a>
-<a asp-controller="Report" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+<a asp-controller="ReportPost" asp-action="Index" class="btn btn-primary">Back to list</a>
+@if (User.Identity.IsAuthenticated)
+{
+    if (UserManager.GetUserAsync(User).Result.Id == Model.Reporter.Id)
+    {
+        <a asp-controller="ReportPost" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+    }
+}
 

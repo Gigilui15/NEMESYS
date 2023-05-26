@@ -6,20 +6,62 @@ using System.Xml.Linq;
 
 namespace NEMESYS.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options){}
         public DbSet<Category> Categories { get; set; }
         public DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<IdentityUserRole<string>>()
-            .HasNoKey();
             base.OnModelCreating(modelBuilder);
+            //Seed Admin User
+            ApplicationUser investigatorA = new ApplicationUser()
+            {
+                //Used GUID Generator: https://www.uuidgenerator.net/guid
+                Id = "19e2d6a8-f9aa-11ed-be56-0242ac120002", 
+                UserName = "investigator@mail.com", 
+                NormalizedUserName = "INVESTIGATOR@MAIL.COM",
+                Email = "investigator@mail.com",
+                NormalizedEmail = "ADMIN@MAIL.COM",
+                ReporterAlias = "Investigator A",
+                LockoutEnabled = false,
+                EmailConfirmed = true,
+                PhoneNumber = ""
+            };
+            PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
+            investigatorA.PasswordHash = passwordHasher.HashPassword(investigatorA, "S@fePassw0rd1"); //make sure you adhere to policies (incl confirmed etc…)
+            modelBuilder.Entity<ApplicationUser>().HasData(investigatorA);
+
+            ApplicationUser investigatorB = new ApplicationUser()
+            {
+                Id = "1e0a2010-f9aa-11ed-be56-0242ac120002",
+                UserName = "investigator@gmail.com", 
+                NormalizedUserName = "INVESTIGATOR@GMAIL.COM",
+                Email = "investigator@gmail.com",
+                NormalizedEmail = "INVESTIGATOR@GMAIL.COM",
+                ReporterAlias = "Investigator B",
+                LockoutEnabled = false,
+                EmailConfirmed = true,
+                PhoneNumber = ""
+            };
+            investigatorB.PasswordHash = passwordHasher.HashPassword(investigatorB, "S@feRPassw0rd42"); //make sure you adhere to policies (incl confirmed etc…)
+            modelBuilder.Entity<ApplicationUser>().HasData(investigatorB);
+
+            ApplicationUser investigatorC = new ApplicationUser()
+            {
+                Id = "2f2e610c-f9ab-11ed-be56-0242ac120002",
+                UserName = "tester@gmail.com",
+                NormalizedUserName = "TESTER@GMAIL.COM",
+                Email = "tester@gmail.com",
+                NormalizedEmail = "TESTER@GMAIL.COM",
+                ReporterAlias = "Tester",
+                LockoutEnabled = false,
+                EmailConfirmed = true,
+                PhoneNumber = ""
+            };
+            investigatorC.PasswordHash = passwordHasher.HashPassword(investigatorC, "S@fe$tPassw0rd129"); //make sure you adhere to policies (incl confirmed etc…)
+            modelBuilder.Entity<ApplicationUser>().HasData(investigatorC);
             modelBuilder.Entity<Category>().HasData(
                 new Category()
                 { 
@@ -37,6 +79,48 @@ namespace NEMESYS.Data
                     Name = "Health"
                 }
                 );
+            //Creating the Roles
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole() 
+                {
+                        Id = "b582190c-f9af-11ed-be56-0242ac120002",
+                        Name = "Reporter",
+                        NormalizedName = "REP",
+                        ConcurrencyStamp = "1"
+                },
+                new IdentityRole()
+                {
+                    Id = "2e33b0ea-f9b0-11ed-be56-0242ac120002",
+                    Name = "Investigator",
+                    NormalizedName = "INV",
+                    ConcurrencyStamp = "1"
+                }
+                );
+
+            //Assigning Investigator Roles to Seed Investigators
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData
+                (new IdentityUserRole<string>()
+                {
+                    //Investigator Role
+                    RoleId = "2e33b0ea-f9b0-11ed-be56-0242ac120002",
+                    //Investigator A's ID
+                    UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002"
+                },
+                new IdentityUserRole<string>()
+                {
+                    //Investigator Role
+                    RoleId = "2e33b0ea-f9b0-11ed-be56-0242ac120002",
+                    //Investigator B's ID
+                    UserId = "1e0a2010-f9aa-11ed-be56-0242ac120002"
+                },
+                new IdentityUserRole<string>()
+                {
+                    //Investigator Role
+                    RoleId = "2e33b0ea-f9b0-11ed-be56-0242ac120002",
+                    //Tester's ID
+                    UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002"
+                }
+                );
 
             modelBuilder.Entity<Report>().HasData(
                 new Report()
@@ -47,7 +131,8 @@ namespace NEMESYS.Data
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.UtcNow,
                     ImageUrl = "/images/uom.jpg",
-                    CategoryId = 1
+                    CategoryId = 1,
+                    UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002"
                 },
                 new Report() {
                     Id = 2,
@@ -56,7 +141,8 @@ namespace NEMESYS.Data
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.UtcNow.AddDays(-1),
                     ImageUrl = "/images/quad.jpg",
-                    CategoryId = 2
+                    CategoryId = 2,
+                    UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002"
                 },
                 new Report()
                 {
@@ -66,7 +152,8 @@ namespace NEMESYS.Data
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.UtcNow.AddDays(-2),
                     ImageUrl = "/images/ICT.jpg",
-                    CategoryId = 3
+                    CategoryId = 3,
+                    UserId = "1e0a2010-f9aa-11ed-be56-0242ac120002"
                 }
                 ); ;
         }

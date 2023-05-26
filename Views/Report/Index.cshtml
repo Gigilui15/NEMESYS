@@ -14,8 +14,8 @@
             <img class="card-img-top" src="@reportPost.ImageUrl" alt="Image for @reportPost.Title" />
             <div class="card-body">
                 <h3 class="card-title">@reportPost.Title</h3>
-                <p class="small">@reportPost.CreatedDate.ToShortDateString() in @reportPost.Category.Name</p>
-                <a asp-controller="Report" asp-action="Details" asp-route-id="@reportPost.Id" class="btn btn-primary">Details</a>
+                <p class="small">@reportPost.CreatedDate.ToShortDateString() in @reportPost.Category.Name by @reportPost.Reporter.Name</p>
+                <a asp-controller="ReportPost" asp-action="Details" asp-route-id="@reportPost.Id" class="btn btn-primary">Details</a>
             </div>
         </div>
     }
