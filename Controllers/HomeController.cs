@@ -33,7 +33,6 @@ namespace NEMESYS.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Reporter, Investigator")]
         public IActionResult About()
         {
             return View();

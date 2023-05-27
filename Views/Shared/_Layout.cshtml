@@ -27,8 +27,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Report" asp-action="Index">Reports</a>
                         </li>
+                        @if (User.IsInRole("Reporter") || User.IsInRole("Investigator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Report" asp-action="Create">Create New</a>
+                            </li>
+                        }
+
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Report" asp-action="Create">Create New</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Investigations">Investigations</a>
                         </li>
                         @if (User.IsInRole("Investigator"))
                         {
@@ -36,13 +43,8 @@
                                 <a class="nav-link text-light" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
                             </li>
                         }
-
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Investigations">Investigations</a>
                         </li>
 
                     </ul>
