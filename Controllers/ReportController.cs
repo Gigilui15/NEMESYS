@@ -53,7 +53,6 @@ namespace NEMESYS.Controllers
             return View(model);
         }
 
-        [Authorize]
         public IActionResult Details(int id)
         {
             var reportPost = _NEMESYSRepository.GetReportById(id);
@@ -222,12 +221,12 @@ namespace NEMESYS.Controllers
                         // Then persist using a new name for consistency (e.g., new Guid)
                         var extension = "." + updatedReportPost.ImageToUpload.FileName.Split('.')[updatedReportPost.ImageToUpload.FileName.Split('.').Length - 1];
                         fileName = Guid.NewGuid().ToString() + extension;
-                        var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\blogposts\\" + fileName;
+                        var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\reports\\" + fileName;
                         using (var bits = new FileStream(path, FileMode.Create))
                         {
                             updatedReportPost.ImageToUpload.CopyTo(bits);
                         }
-                        imageUrl = "/images/blogposts/" + fileName;
+                        imageUrl = "/images/reports/" + fileName;
                     }
                     else
                         imageUrl = modelToUpdate.ImageUrl;

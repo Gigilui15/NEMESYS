@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using NEMESYS.Data;
 using NEMESYS.Models;
 using NEMESYS.Models.Interfaces;
 using NEMESYS.Models.Repositories;
+using NEMESYS.Services;
 using System;
 
 namespace NEMESYS
@@ -14,6 +16,9 @@ namespace NEMESYS
         {
             //Services configuration
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
+            builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
             //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine
             var configuration = builder.Configuration;
@@ -61,7 +66,8 @@ namespace NEMESYS
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
 
-
+                //Adding Account Email Verification for Login
+                options.SignIn.RequireConfirmedEmail = true;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
