@@ -1,0 +1,25 @@
+﻿@model ReportDashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="text-light">Dashboard</h2>
+
+<div>
+    <hr />
+    <dl class="row text-light">
+        <dt class="col-sm-2">
+            <label asp-for="TotalEntries"></label>
+        </dt>
+        <dd class="col-sm-10">
+            <input asp-for="TotalEntries" readonly />
+        </dd>
+        <dt class="col-sm-2">
+            <label asp-for="TotalRegisteredUsers"></label>
+        </dt>
+        <dd class="col-sm-10">
+            <input asp-for="TotalRegisteredUsers" readonly />
+        </dd>
+    </dl>
+</div>

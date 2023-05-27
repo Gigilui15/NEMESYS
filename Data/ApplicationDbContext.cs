@@ -8,7 +8,7 @@ namespace NEMESYS.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options){}
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Report> Reports { get; set; }
 
@@ -19,8 +19,8 @@ namespace NEMESYS.Data
             ApplicationUser investigatorA = new ApplicationUser()
             {
                 //Used GUID Generator: https://www.uuidgenerator.net/guid
-                Id = "19e2d6a8-f9aa-11ed-be56-0242ac120002", 
-                UserName = "investigator@mail.com", 
+                Id = "19e2d6a8-f9aa-11ed-be56-0242ac120002",
+                UserName = "investigator@mail.com",
                 NormalizedUserName = "INVESTIGATOR@MAIL.COM",
                 Email = "investigator@mail.com",
                 NormalizedEmail = "ADMIN@MAIL.COM",
@@ -36,7 +36,7 @@ namespace NEMESYS.Data
             ApplicationUser investigatorB = new ApplicationUser()
             {
                 Id = "1e0a2010-f9aa-11ed-be56-0242ac120002",
-                UserName = "investigator@gmail.com", 
+                UserName = "investigator@gmail.com",
                 NormalizedUserName = "INVESTIGATOR@GMAIL.COM",
                 Email = "investigator@gmail.com",
                 NormalizedEmail = "INVESTIGATOR@GMAIL.COM",
@@ -64,7 +64,7 @@ namespace NEMESYS.Data
             modelBuilder.Entity<ApplicationUser>().HasData(investigatorC);
             modelBuilder.Entity<Category>().HasData(
                 new Category()
-                { 
+                {
                     Id = 1,
                     Name = "Accident"
                 },
@@ -81,12 +81,12 @@ namespace NEMESYS.Data
                 );
             //Creating the Roles
             modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole() 
+                new IdentityRole()
                 {
-                        Id = "b582190c-f9af-11ed-be56-0242ac120002",
-                        Name = "Reporter",
-                        NormalizedName = "REP",
-                        ConcurrencyStamp = "1"
+                    Id = "b582190c-f9af-11ed-be56-0242ac120002",
+                    Name = "Reporter",
+                    NormalizedName = "REP",
+                    ConcurrencyStamp = "1"
                 },
                 new IdentityRole()
                 {
@@ -134,7 +134,8 @@ namespace NEMESYS.Data
                     CategoryId = 1,
                     UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002"
                 },
-                new Report() {
+                new Report()
+                {
                     Id = 2,
                     Title = "Hornet Nests Around Quad!",
                     Content = "Two hornet nests have been spotted under...",

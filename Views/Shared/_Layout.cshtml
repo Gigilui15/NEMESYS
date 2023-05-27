@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="~/css/site.css" />
 
 </head>
-<body>
+<body style="background-color:#172642;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background-color:#172642; padding-bottom:50px;">
+            <div class="container-fluid" style="background-color:#0F1724;">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="/images/logo.png" width="150" height="90">
-</a>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,16 +30,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-controller="Report" asp-action="Create">Create New</a>
                         </li>
+                        @if (User.IsInRole("Investigator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Investigations">Investigations</a>
+                        </li>
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style="padding-bottom:250px;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
