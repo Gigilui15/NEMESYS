@@ -124,7 +124,11 @@ namespace NEMESYS.Models.Repositories
 
         public void Delete(Report report)
         {
-            throw new NotImplementedException();
+            _appDbContext.Reports.Remove(report);
+            Investigation investigation = _appDbContext.Investigations.Find(report.Id);
+            _appDbContext.Investigations.Remove(investigation);
+            _appDbContext.Entry(report).State = EntityState.Deleted;
+            _appDbContext.SaveChanges();
         }
     }
 }

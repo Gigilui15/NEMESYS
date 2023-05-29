@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NEMESYS.Data;
+using NEMESYS.Models;
 using NEMESYS.Models.Interfaces;
 using System;
 
@@ -65,10 +66,6 @@ namespace NEMESYS.Models.Repositories
                 _applicationDbContext.Entry(investigation).State = EntityState.Deleted;
                 _applicationDbContext.SaveChanges();
             }
-
         }
-
     }
 }
-
-

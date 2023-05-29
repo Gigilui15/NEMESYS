@@ -27,7 +27,7 @@
                     {
                         @if (User.IsInRole("Investigator"))
                         {
-                            <a asp-controller="Investigation" asp-action="Create" asp-route-reportId="@reportPost.Id" class="btn btn-outline-success btn-info md-3">
+                            <a asp-controller="Investigation" asp-action="Create" asp-route-reportId="@reportPost.Id" class="btn btn-info md-3">
                                 Investigate
                             </a>
                         }
