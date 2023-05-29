@@ -18,12 +18,12 @@
     </div>
 </div>
 
-<a asp-controller="ReportPost" asp-action="Index" class="btn btn-primary">Back to list</a>
+<a asp-controller="Report" asp-action="Index" class="btn btn-primary">Back to list</a>
 @if (User.Identity.IsAuthenticated)
 {
     if (UserManager.GetUserAsync(User).Result.Id == Model.Reporter.Id)
     {
-        <a asp-controller="ReportPost" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+        <a asp-controller="Report" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
     }
 }
 

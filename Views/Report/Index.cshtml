@@ -15,8 +15,8 @@
             <div class="card-body">
                 <h3 class="card-title text-light">@reportPost.Title</h3>
                 <p class="small text-light">@reportPost.CreatedDate.ToShortDateString() in @reportPost.Category.Name by @reportPost.Reporter.Name</p>
-                <a asp-controller="ReportPost" asp-action="Details" asp-route-id="@reportPost.Id" class="btn btn-primary">Details</a>
-                <a asp-controller="ReportPost" asp-action="Delete" asp-route-id="@reportPost.Id" button class="btn btn-primary btn-danger m-lg-3" type="submit">Delete</a>
+                <a asp-controller="Report" asp-action="Details" asp-route-id="@reportPost.Id" class="btn btn-primary">Details</a>
+                <a asp-controller="Report" asp-action="Delete" asp-route-id="@reportPost.Id" button class="btn btn-primary btn-danger m-lg-3" type="submit">Delete</a>
 
 
             </div>
