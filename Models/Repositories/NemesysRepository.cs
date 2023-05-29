@@ -115,13 +115,6 @@ namespace NEMESYS.Models.Repositories
 
         }
 
-        public Report FindByInvestigationId(int investigationId)
-        {
-            return _appDbContext.Reports
-                      .Include(r => r.User)
-                      .FirstOrDefault(r => r.InvestigationId == investigationId);
-        }
-
         public void Delete(Report report)
         {
             _appDbContext.Reports.Remove(report);
@@ -129,6 +122,11 @@ namespace NEMESYS.Models.Repositories
             _appDbContext.Investigations.Remove(investigation);
             _appDbContext.Entry(report).State = EntityState.Deleted;
             _appDbContext.SaveChanges();
+        }
+
+        public Report GetReportByInv(Investigation investigation)
+        {
+            return _appDbContext.Reports.FirstOrDefault(r => r.Investigation == investigation);
         }
     }
 }

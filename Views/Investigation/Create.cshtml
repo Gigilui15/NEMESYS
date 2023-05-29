@@ -17,6 +17,7 @@
 
         <form asp-action="Create" method="post" role="form" enctype="multipart/form-data">
             <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" name="reportId" value="@ViewBag.ReportId" />
 
             <div style="margin-bottom: 20px;">
                 <label asp-for="Content" style="color: white;"></label>

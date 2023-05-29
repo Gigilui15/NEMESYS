@@ -10,6 +10,6 @@
         IEnumerable<Category> GetAllCategories();
         Category GetCategoryById(int categoryId);
         void Delete(Report report);
-        Report FindByInvestigationId(int investigationId);
+        Report GetReportByInv(Investigation investigation);
     }
 }

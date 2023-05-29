@@ -206,7 +206,11 @@ namespace NEMESYS.Controllers
                 return Forbid();
             }
 
+            Report report = _nemesysRepository.GetReportByInv(investigation);
+            report.InvestigationId = null;
+            _nemesysRepository.UpdateReportPost(report);
             _investigationRepository.Delete(investigation);
+            
 
             return RedirectToAction("Index");
         }

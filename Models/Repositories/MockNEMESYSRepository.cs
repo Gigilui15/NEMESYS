@@ -141,5 +141,10 @@ namespace NEMESYS.Models.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Report GetReportByInv(Investigation investigation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
