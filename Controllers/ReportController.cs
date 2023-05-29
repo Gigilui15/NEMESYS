@@ -68,8 +68,6 @@ namespace NEMESYS.Controllers
         }
 
 
-
-        [Authorize]
         public IActionResult Details(int id)
         {
             try
@@ -355,6 +353,7 @@ namespace NEMESYS.Controllers
                 return View("Error");
             }
         }
+
         public IActionResult Delete(int id)
         {
             try
