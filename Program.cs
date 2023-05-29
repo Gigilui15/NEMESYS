@@ -18,6 +18,8 @@ namespace NEMESYS
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddTransient<IEmailSender, EmailSender>();
+            builder.Services.AddTransient<IInvestigationRepository, InvestigationsRepository>();
+
             builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
             //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine

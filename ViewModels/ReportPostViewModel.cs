@@ -11,5 +11,6 @@ namespace NEMESYS.ViewModels
         public int ReadCount { get; set; }
         public CategoryViewModel Category { get; set; }
         public ReporterViewModel Reporter { get; set; }
+        public int? InvestigationId { get; set; }
     }
 }

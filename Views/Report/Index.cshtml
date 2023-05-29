@@ -16,10 +16,27 @@
                 <h3 class="card-title text-light">@reportPost.Title</h3>
                 <p class="small text-light">@reportPost.CreatedDate.ToShortDateString() in @reportPost.Category.Name by @reportPost.Reporter.Name</p>
                 <a asp-controller="Report" asp-action="Details" asp-route-id="@reportPost.Id" class="btn btn-primary">Details</a>
-                <a asp-controller="Report" asp-action="Delete" asp-route-id="@reportPost.Id" button class="btn btn-primary btn-danger m-lg-3" type="submit">Delete</a>
-
-
+                @if (User.Identity.Name == reportPost.Reporter.Name)
+                {
+                    <a asp-controller="Report" asp-action="Delete" asp-route-id="@reportPost.Id" button class="btn btn-primary btn-danger m-lg-3" type="submit">Delete</a>
+                }
+                @if (reportPost.InvestigationId != 0)
+                {
+                    <a asp-controller="Investigation" asp-action="Details" asp-route-id="@reportPost.InvestigationId" class="btn btn-primary md-3" style="margin-top: 10px;">
+                        View Investigation
+                    </a>
+                }
+                else
+                {
+                    @if (User.IsInRole("Investigator"))
+                    {
+                        <a asp-controller="Investigation" asp-action="Create" asp-route-reportId="@reportPost.Id" class="btn btn-primary md-3">
+                            Investigate
+                        </a>
+                    }
+                }
             </div>
         </div>
     }
+
 </div>

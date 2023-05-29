@@ -132,5 +132,14 @@ namespace NEMESYS.Models.Repositories
             return category;
         }
 
+        public Report FindByInvestigationId(int investigationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Report report)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

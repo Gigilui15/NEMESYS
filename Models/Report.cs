@@ -20,6 +20,8 @@ namespace NEMESYS.Models
         public string UserId { get; set; }
         //Reference navigation property
         public ApplicationUser User { get; set; }
+        public int? InvestigationId { get; set; }
+        public Investigation? Investigation { get; set; }
 
     }
 

@@ -1,0 +1,47 @@
+﻿@model EditInvestigationViewModel
+
+@{
+    ViewData["Title"] = "Create Investigation";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <div style="background-color: #333; padding: 20px;">
+        <h2 style="color: white; margin-bottom: 20px;">Create Investigation</h2>
+
+        <form asp-action="Create" method="post" role="form" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div style="margin-bottom: 20px;">
+                <label asp-for="Content" style="color: white;"></label>
+                <br />
+                <textarea asp-for="Content" style="width: 100%; height: 100px;"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+                <br />
+                <label style="color: white;">Report Number:</label>
+                <input type="text" name="reportId" value="@ViewBag.ReportId" readonly />
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <input type="submit" class="btn btn-primary" value="Create Investigation" />
+            </div>
+        </form>
+
+        <div style="margin-top: 20px;">
+            <a asp-controller="Investigation" asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <!-- Inject JQuery validation scripts in Layout -->
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>

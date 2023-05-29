@@ -1,0 +1,30 @@
+﻿@model InvestigationViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Investigation" + Model.Id;
+}
+
+<h1>Investigation @Model.Id</h1>
+<p class="small"><b>Last updated: </b>@Model.UpdatedDate.ToShortDateString()</p>
+
+<div class="card" style="width: 90%; padding: 20px; margin: 20px;">
+    <div class="card-body">
+        <h3 class="card-title">Investigation @Model.Id</h3>
+        <p class="card-text"><b>Description: </b>@Model.Description</p>
+        <p class="small"><b>Investigated: </b>@Model.CreatedDate.ToShortDateString() by @Model.User.Name</p>
+    </div>
+</div>
+
+<a asp-controller="Investigation" asp-action="Index" class="btn btn-primary">Back to list</a>
+
+@if (UserManager.GetUserId(User) == Model.User.Id)
+{
+    <a asp-controller="Investigation" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+}
+
+@if (UserManager.GetUserId(User) == Model.User.Id)
+{
+    <a asp-controller="Investigation" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-primary">Delete</a>
+}

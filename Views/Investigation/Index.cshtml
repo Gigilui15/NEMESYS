@@ -1,0 +1,22 @@
+﻿@model InvestigationListViewModel
+@{
+    ViewData["Title"] = "Investigations";
+}
+
+<h1 class="text-white mb-4">@ViewData["Title"]</h1>
+
+<h2 class="text-white mb-3">Showing @Model.TotalEntries investigation entries</h2>
+
+<div class="card-deck mb-4">
+    @foreach (var inv in Model.Investigations)
+    {
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">Investigation Id: @inv.Id</div>
+            <div class="card-body">
+                <h5 class="card-title">Investigation Date: @inv.CreatedDate.ToShortDateString()</h5>
+                <p class="card-text">Description: @inv.Content</p>
+                <a asp-controller="Investigation" asp-action="Details" asp-route-id="@inv.Id" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    }
+</div>

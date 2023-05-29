@@ -21,7 +21,7 @@ namespace NEMESYS.Models.Repositories
         {
             try
             {
-                return _appDbContext.Reports.Include(b => b.Category).OrderBy(b => b.CreatedDate);
+                return _appDbContext.Reports.Include(b => b.Category).Include(b => b.Investigation).OrderBy(b => b.CreatedDate);
 
             }
             catch (Exception ex)
@@ -35,7 +35,7 @@ namespace NEMESYS.Models.Repositories
         {
             try
             {
-                return _appDbContext.Reports.Include(b => b.Category).FirstOrDefault(b => b.Id == ReportId);
+                return _appDbContext.Reports.Include(b => b.Category).Include(b => b.Investigation).FirstOrDefault(b => b.Id == ReportId);
             }
             catch (Exception ex)
             {
@@ -113,6 +113,18 @@ namespace NEMESYS.Models.Repositories
                 throw;
             }
 
+        }
+
+        public Report FindByInvestigationId(int investigationId)
+        {
+            return _appDbContext.Reports
+                      .Include(r => r.User)
+                      .FirstOrDefault(r => r.InvestigationId == investigationId);
+        }
+
+        public void Delete(Report report)
+        {
+            throw new NotImplementedException();
         }
     }
 }

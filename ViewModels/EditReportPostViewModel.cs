@@ -21,7 +21,7 @@ namespace NEMESYS.ViewModels
         public string? ImageUrl { get; set; }
 
         [Display(Name = "Featured Image")]
-        public IFormFile ImageToUpload { get; set; } //used only when submitting form
+        public IFormFile? ImageToUpload { get; set; } //used only when submitting form
 
         [Display(Name = "Report Post Category")]
         //Property used to bind user selection.

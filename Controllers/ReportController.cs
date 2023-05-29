@@ -12,6 +12,7 @@ namespace NEMESYS.Controllers
     public class ReportController : Controller
     {
         private readonly INEMESYSRepository _NEMESYSRepository;
+        private readonly IInvestigationRepository _IInvestigationRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ReportController> _logger;
 
@@ -95,7 +96,8 @@ namespace NEMESYS.Controllers
                             Name = (_userManager.FindByIdAsync(reportPost.UserId).Result != null) ?
                                 _userManager.FindByIdAsync(reportPost.UserId).Result.UserName :
                                 "Anonymous"
-                        }
+                        },
+                        InvestigationId = reportPost.InvestigationId ?? 0
                     };
 
                     return View(model);
@@ -349,6 +351,35 @@ namespace NEMESYS.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
+                return View("Error");
+            }
+        }
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var report = _NEMESYSRepository.GetReportById(id);
+                string userId = _userManager.GetUserId(User);
+
+                if (report == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    if (report.UserId == userId)
+                    {
+                        if (report.InvestigationId == 0) _IInvestigationRepository.Delete((int)report.InvestigationId);
+                        _NEMESYSRepository.Delete(report);
+                    }
+                }
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception e)
+            {
+
+                _logger.LogError(e.Message);
                 return View("Error");
             }
         }

@@ -11,6 +11,7 @@ namespace NEMESYS.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Investigation> Investigations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -77,6 +78,20 @@ namespace NEMESYS.Data
                 {
                     Id = 3,
                     Name = "Health"
+                },
+                new Category()
+                {
+                    Id = 4,
+                    Name = "Assault"
+                }, new Category()
+                {
+                    Id = 5,
+                    Name = "Equipment"
+                },
+                new Category()
+                {
+                    Id = 6,
+                    Name = "No Category"
                 }
                 );
             //Creating the Roles
@@ -132,7 +147,8 @@ namespace NEMESYS.Data
                     UpdatedDate = DateTime.UtcNow,
                     ImageUrl = "/images/uom.jpg",
                     CategoryId = 1,
-                    UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002"
+                    UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002",
+                    InvestigationId = 1
                 },
                 new Report()
                 {
@@ -143,7 +159,8 @@ namespace NEMESYS.Data
                     UpdatedDate = DateTime.UtcNow.AddDays(-1),
                     ImageUrl = "/images/quad.jpg",
                     CategoryId = 2,
-                    UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002"
+                    UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002",
+                    InvestigationId = 2
                 },
                 new Report()
                 {
@@ -154,9 +171,37 @@ namespace NEMESYS.Data
                     UpdatedDate = DateTime.UtcNow.AddDays(-2),
                     ImageUrl = "/images/ICT.jpg",
                     CategoryId = 3,
-                    UserId = "1e0a2010-f9aa-11ed-be56-0242ac120002"
+                    UserId = "1e0a2010-f9aa-11ed-be56-0242ac120002",
+                    InvestigationId = 3
                 }
-                ); ;
+                );
+
+            modelBuilder.Entity<Investigation>().HasData(
+                 new Investigation
+                 {
+                     Id = 1,
+                     Content = "LESA on the Way...",
+                     CreatedDate = new DateTime(2023, 3, 15),
+                     UpdatedDate = new DateTime(2023, 3, 15),
+                     UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002"
+                 },
+                new Investigation
+                {
+                    Id = 2,
+                    Content = "Spotted all of them and called pest removal...",
+                    CreatedDate = new DateTime(2023, 4, 1),
+                    UpdatedDate = new DateTime(2023, 4, 1),
+                    UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002"
+                },
+                new Investigation
+                {
+                    Id = 3,
+                    Content = "Should have been cleaned last week however...",
+                    CreatedDate = new DateTime(2023, 5, 1),
+                    UpdatedDate = new DateTime(2023, 5, 1),
+                    UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002"
+                }
+                );
         }
     }
 }
