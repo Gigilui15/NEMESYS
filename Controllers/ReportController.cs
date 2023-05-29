@@ -54,7 +54,8 @@ namespace NEMESYS.Controllers
                                 Name = (_userManager.FindByIdAsync(b.UserId).Result != null) ?
                                     _userManager.FindByIdAsync(b.UserId).Result.UserName :
                                     "Anonymous"
-                            }
+                            },
+                            InvestigationId = b.InvestigationId ?? 0
                         })
                 };
                 return View(model);
