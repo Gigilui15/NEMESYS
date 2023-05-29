@@ -55,7 +55,8 @@ namespace NEMESYS.Controllers
                                     _userManager.FindByIdAsync(b.UserId).Result.UserName :
                                     "Anonymous"
                             },
-                            InvestigationId = b.InvestigationId ?? 0
+                            InvestigationId = b.InvestigationId ?? 0,
+                            StatusId = b.StatusId,
                         })
                 };
                 return View(model);
@@ -96,7 +97,8 @@ namespace NEMESYS.Controllers
                                 _userManager.FindByIdAsync(reportPost.UserId).Result.UserName :
                                 "Anonymous"
                         },
-                        InvestigationId = reportPost.InvestigationId ?? 0
+                        InvestigationId = reportPost.InvestigationId ?? 0,
+                        StatusId = reportPost.StatusId,
                     };
 
                     return View(model);
@@ -170,6 +172,7 @@ namespace NEMESYS.Controllers
                         ImageUrl = "/images/reports/" + fileName,
                         CategoryId = newReportPost.CategoryId,
                         UserId = _userManager.GetUserId(User),
+                        StatusId = 1
                     };
 
                     _NEMESYSRepository.CreateReportPost(report);

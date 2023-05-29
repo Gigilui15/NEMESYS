@@ -14,6 +14,7 @@
             <img class="card-img-top" src="@reportPost.ImageUrl" alt="Image for @reportPost.Title" />
             <div class="card-body">
                 <h3 class="card-title text-light">@reportPost.Title</h3>
+                <h3 class="card-title text-light">@reportPost.StatusId</h3>
                 <p class="small text-light">@reportPost.CreatedDate.ToShortDateString() in @reportPost.Category.Name by @reportPost.Reporter.Name</p>
                 <div style="display: flex; flex-direction: column; margin-bottom: 10px;">
                     <a asp-controller="Report" asp-action="Details" asp-route-id="@reportPost.Id" class="btn btn-primary m-lg-3">Details</a>

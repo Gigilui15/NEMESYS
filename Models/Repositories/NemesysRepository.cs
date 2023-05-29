@@ -126,5 +126,32 @@ namespace NEMESYS.Models.Repositories
         {
             return _appDbContext.Reports.FirstOrDefault(r => r.Investigation == investigation);
         }
+
+        public IEnumerable<Status> GetAllStatuses()
+        {
+            try
+            {
+                return _appDbContext.Statuses;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
+        public Status GetStatusById(int statusId)
+        {
+            try
+            {
+                return _appDbContext.Statuses.FirstOrDefault(c => c.Id == statusId);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace NEMESYS.Models
         public ApplicationUser User { get; set; }
         public int? InvestigationId { get; set; }
         public Investigation? Investigation { get; set; }
-
+        public int StatusId { get; set; }
     }
 
 }

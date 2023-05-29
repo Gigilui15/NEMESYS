@@ -12,6 +12,7 @@ namespace NEMESYS.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Investigation> Investigations { get; set; }
+        public DbSet<Status> Statuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -83,7 +84,8 @@ namespace NEMESYS.Data
                 {
                     Id = 4,
                     Name = "Assault"
-                }, new Category()
+                }, 
+                new Category()
                 {
                     Id = 5,
                     Name = "Equipment"
@@ -94,6 +96,34 @@ namespace NEMESYS.Data
                     Name = "No Category"
                 }
                 );
+
+            modelBuilder.Entity<Status>().HasData(
+                new Status
+                { 
+                    Id = 1,
+                    //Awaiting Investigator
+                    Title = "Open"
+                },
+                new Status
+                {
+                    Id = 2,
+                    //Being Investigated or Has been Investigated
+                    Title = "In Progress"
+                },
+                new Status
+                {
+                    Id = 3,
+                    //Solved
+                    Title = "Closed"
+                },
+                new Status
+                {
+                    Id = 4,
+                    //Not Solved
+                    Title = "Not Solved"
+                }
+                );
+
             //Creating the Roles
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole()
@@ -148,7 +178,8 @@ namespace NEMESYS.Data
                     ImageUrl = "/images/uom.jpg",
                     CategoryId = 1,
                     UserId = "2f2e610c-f9ab-11ed-be56-0242ac120002",
-                    InvestigationId = 1
+                    InvestigationId = 1,
+                    StatusId = 1
                 },
                 new Report()
                 {
@@ -160,7 +191,8 @@ namespace NEMESYS.Data
                     ImageUrl = "/images/quad.jpg",
                     CategoryId = 2,
                     UserId = "19e2d6a8-f9aa-11ed-be56-0242ac120002",
-                    InvestigationId = 2
+                    InvestigationId = 2,
+                    StatusId = 2
                 },
                 new Report()
                 {
@@ -172,7 +204,8 @@ namespace NEMESYS.Data
                     ImageUrl = "/images/ICT.jpg",
                     CategoryId = 3,
                     UserId = "1e0a2010-f9aa-11ed-be56-0242ac120002",
-                    InvestigationId = 3
+                    InvestigationId = 3,
+                    StatusId = 3
                 }
                 );
 

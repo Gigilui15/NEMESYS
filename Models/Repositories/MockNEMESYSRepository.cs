@@ -146,5 +146,15 @@ namespace NEMESYS.Models.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Status> GetAllStatuses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Status GetStatusById(int statusId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

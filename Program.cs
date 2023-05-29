@@ -17,6 +17,7 @@ namespace NEMESYS
             //Services configuration
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
             builder.Services.AddTransient<IEmailSender, EmailSender>();
             builder.Services.AddTransient<IInvestigationRepository, InvestigationsRepository>();
 
@@ -82,10 +83,6 @@ namespace NEMESYS
                 options.SlidingExpiration = true;
 
             });
-
-            //Let's keep it simple for now
-            builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
-
 
             builder.Services.AddControllersWithViews();
 

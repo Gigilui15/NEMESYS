@@ -11,5 +11,7 @@
         Category GetCategoryById(int categoryId);
         void Delete(Report report);
         Report GetReportByInv(Investigation investigation);
+        IEnumerable<Status> GetAllStatuses();
+        Status GetStatusById(int statusId);
     }
 }
