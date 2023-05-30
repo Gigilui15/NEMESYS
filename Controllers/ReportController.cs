@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
+using NEMESYS.Models.Repositories;
 
 namespace NEMESYS.Controllers
 {
@@ -17,10 +18,11 @@ namespace NEMESYS.Controllers
         private readonly ILogger<ReportController> _logger;
 
         // Using constructor dependency injection for the controller (i.e., when the controller is instantiated, it will receive an instance of INEMESYSRepository according to the config in Program.cs)
-        public ReportController(INEMESYSRepository NEMESYSRepository, UserManager<ApplicationUser> userManager, ILogger<ReportController> logger)
+        public ReportController(INEMESYSRepository NEMESYSRepository, UserManager<ApplicationUser> userManager, IInvestigationRepository investigationRepository,  ILogger<ReportController> logger)
         {
             _NEMESYSRepository = NEMESYSRepository;
             _userManager = userManager;
+            _IInvestigationRepository = investigationRepository;
             _logger = logger;
         }
 
@@ -187,7 +189,7 @@ namespace NEMESYS.Controllers
                     // Re-attach to view model before sending back to the View (this is necessary so that the View can repopulate the drop-down and pre-select according to the CategoryId)
                     newReportPost.CategoryList = categoryList;
 
-                    return View(newReportPost);
+                    return View("Index");
                 }
             }
             catch (DbUpdateException e)
@@ -359,6 +361,7 @@ namespace NEMESYS.Controllers
             try
             {
                 var report = _NEMESYSRepository.GetReportById(id);
+                var investigation = _IInvestigationRepository.GetInvestigationById(id);
                 string userId = _userManager.GetUserId(User);
 
                 if (report == null)
@@ -369,7 +372,7 @@ namespace NEMESYS.Controllers
                 {
                     if (report.UserId == userId)
                     {
-                        if (report.InvestigationId == 0) _IInvestigationRepository.Delete((int)report.InvestigationId);
+                        if (report.InvestigationId != 0) _IInvestigationRepository.Delete((int)report.InvestigationId);
                         _NEMESYSRepository.Delete(report);
                     }
                 }

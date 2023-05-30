@@ -219,33 +219,26 @@ namespace NEMESYS.Controllers
 
         public IActionResult Delete(int id)
         {
-            try {
+            var investigation = _investigationRepository.GetInvestigationById(id);
+            string userId = _userManager.GetUserId(User);
 
-                var investigation = _investigationRepository.GetInvestigationById(id);
-                string userId = _userManager.GetUserId(User);
-
-                if (investigation == null)
-                {
-                    return NotFound();
-                }
-
-                if (investigation.UserId != userId)
-                {
-                    return Forbid();
-                }
-
-                Report report = _nemesysRepository.GetReportByInv(investigation);
-                report.InvestigationId = null;
-                _nemesysRepository.UpdateReportPost(report);
-                _investigationRepository.Delete(investigation);
-
-
-                return RedirectToAction("Index");
+            if (investigation == null)
+            {
+                return NotFound();
             }
-            catch (Exception e) { _logger.LogError(e.Message); return View("Error"); }
+            if (investigation.UserId != userId)
+            {
+                return Forbid();
+            }
+            Report report = _nemesysRepository.GetReportByInv(investigation);
+            report.InvestigationId = null;
+            _nemesysRepository.UpdateReportPost(report);
+            _investigationRepository.Delete(investigation);
+            return RedirectToAction("Index");
         }
+    }
 
     }
-    }
+    
 
 
