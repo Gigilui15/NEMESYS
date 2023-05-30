@@ -1,0 +1,22 @@
+﻿@model HallOfFameViewModel
+
+@{
+    ViewData["Title"] = "HallOfFame";
+}
+
+<h1 class="text-light">Hall Of Fame</h1>
+<a asp-controller="Report" asp-action="HallOfFame" asp-route-type="reports">Sort by number of Reports Posted!</a>
+
+<table class="table text-light">
+    <tr>
+        <th>
+            Name
+        </th>>
+    </tr>
+    <tr>
+        <th>
+            Reports
+        </th>>
+    </tr>
+</table>
+<a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
