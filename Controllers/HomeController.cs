@@ -63,5 +63,10 @@ namespace NEMESYS.Controllers
         {
             return View();
         }
+
+        public IActionResult HallOfFame()
+        {
+            return View();
+        }
     }
 }
