@@ -16,46 +16,71 @@ namespace NEMESYS.Controllers
         private readonly INEMESYSRepository _nemesysRepository;
         private readonly IInvestigationRepository _investigationRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<InvestigationController> _logger;
+
 
         public InvestigationController(IInvestigationRepository repo, UserManager<ApplicationUser> userManager, INEMESYSRepository nemesysRepository, IEmailSender mail, ILogger<InvestigationController> logger)
-        { 
+        {
             _nemesysRepository = nemesysRepository;
             _investigationRepository = repo;
             _userManager = userManager;
+            _logger = logger;
+
         }
 
         public IActionResult Index()
         {
-            var investigations = _investigationRepository.GetAllInvestigations();
-            var model = new InvestigationListViewModel()
+            try
             {
-                TotalEntries = investigations.Count(),
-                Investigations = investigations
-            };
-            return View(model);
+                var investigations = _investigationRepository.GetAllInvestigations();
+                var model = new InvestigationListViewModel()
+                {
+                    TotalEntries = investigations.Count(),
+                    Investigations = investigations
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+
+                _logger.LogError(e.Message);
+                return View("Error");
+
+            }
         }
+
+
 
         public IActionResult Details(int id)
         {
-            var investigation = _investigationRepository.GetInvestigationById(id);
-            if (investigation == null)
-                return NotFound();
-            else
+            try
             {
-                var model = new InvestigationViewModel()
-                {
-                    Id = investigation.Id,
-                    CreatedDate = investigation.CreatedDate,
-                    UpdatedDate= investigation.UpdatedDate,
-                    Description = investigation.Content,
-                    User = new UserViewModel
-                    {
-                        Id = investigation.UserId,
-                        Name = (_userManager.FindByIdAsync(investigation.UserId).Result != null) ? _userManager.FindByIdAsync(investigation.UserId).Result.UserName : "Anonymous"
-                    },
-                };
 
-                return View(model);
+
+                var investigation = _investigationRepository.GetInvestigationById(id);
+                if (investigation == null)
+                    return NotFound();
+                else
+                {
+                    var model = new InvestigationViewModel()
+                    {
+                        Id = investigation.Id,
+                        CreatedDate = investigation.CreatedDate,
+                        UpdatedDate = investigation.UpdatedDate,
+                        Description = investigation.Content,
+                        User = new UserViewModel
+                        {
+                            Id = investigation.UserId,
+                            Name = (_userManager.FindByIdAsync(investigation.UserId).Result != null) ? _userManager.FindByIdAsync(investigation.UserId).Result.UserName : "Anonymous"
+                        },
+                    };
+
+                    return View(model);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message); return View("Error");
             }
         }
 
@@ -63,6 +88,7 @@ namespace NEMESYS.Controllers
         [Authorize(Roles = "Investigator")]
         public IActionResult Create(int reportId)
         {
+
             var user = _userManager.GetUserAsync(User).Result;
             var roles = _userManager.GetRolesAsync(user).Result;
 
@@ -200,22 +226,19 @@ namespace NEMESYS.Controllers
             {
                 return NotFound();
             }
-
             if (investigation.UserId != userId)
             {
                 return Forbid();
             }
-
             Report report = _nemesysRepository.GetReportByInv(investigation);
             report.InvestigationId = null;
             _nemesysRepository.UpdateReportPost(report);
             _investigationRepository.Delete(investigation);
-            
-
             return RedirectToAction("Index");
         }
-
+    }
 
     }
-}
+    
+
 
