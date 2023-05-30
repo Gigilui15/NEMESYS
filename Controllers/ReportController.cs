@@ -372,7 +372,7 @@ namespace NEMESYS.Controllers
                 {
                     if (report.UserId == userId)
                     {
-                        if (report.InvestigationId != 0) _IInvestigationRepository.Delete((int)report.InvestigationId);
+                        if (report.InvestigationId != null) _IInvestigationRepository.Delete((int)report.InvestigationId);
                         _NEMESYSRepository.Delete(report);
                     }
                 }
