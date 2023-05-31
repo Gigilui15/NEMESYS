@@ -124,7 +124,7 @@ namespace NEMESYS.Models.Repositories
 
         public Report GetReportByInv(Investigation investigation)
         {
-            return _appDbContext.Reports.FirstOrDefault(r => r.Investigation == investigation);
+            return _appDbContext.Reports.Include(b => b.User).FirstOrDefault(r => r.Investigation == investigation);
         }
     }
 }

@@ -8,6 +8,7 @@ using NEMESYS.ViewModels;
 using System.Data;
 using System.Text.Encodings.Web;
 using NEMESYS.Services;
+using System.Composition;
 
 namespace NEMESYS.Controllers
 {
@@ -128,7 +129,7 @@ namespace NEMESYS.Controllers
                     _nemesysRepository.UpdateReportPost(report);
 
                     var callbackUrl = Url.Action("Details", "Investigation", new { id = investigation.Id }, protocol: Request.Scheme);
-                    
+
 
                     // Sending an email to the report owner to alert them of an investigation
                     _emailSender.SendEmailAsync(
@@ -137,11 +138,13 @@ namespace NEMESYS.Controllers
                         // Subject
                         "Investigation Alert!",
                         // Content
-                        $"Attention {report.User.ReporterAlias}! " +
-                        $"\n Your report titled '{report.Title}' has just been investigated! " +
-                        $"Investigation ID: {investigation.Id} \n " +
+                        $"Attention {report.User.ReporterAlias}!<br>" +
+                        $"Your report titled '{report.Title}' has just been investigated!<br>" +
+                        $"Investigation ID: {investigation.Id}<br>" +
                         $"Go to Investigation via NEMESYS: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{callbackUrl}</a>"
                     );
+
+
                 }
 
                 return RedirectToAction("Index");
@@ -163,7 +166,6 @@ namespace NEMESYS.Controllers
             if (existingInv != null)
             {
                 var user = _userManager.GetUserAsync(User).Result;
-                var roles = _userManager.GetRolesAsync(user).Result;
 
                 var currentUserId = _userManager.GetUserId(User);
                 if (existingInv.UserId == currentUserId)
@@ -196,7 +198,6 @@ namespace NEMESYS.Controllers
             }
 
             var user = _userManager.GetUserAsync(User).Result;
-            var roles = _userManager.GetRolesAsync(user).Result;
 
             var currentUserId = _userManager.GetUserId(User);
             if (modelToUpdate.UserId == currentUserId)
@@ -207,8 +208,24 @@ namespace NEMESYS.Controllers
                     modelToUpdate.Content = updatedInvestigation.Content;
                     modelToUpdate.UserId = _userManager.GetUserId(User);
 
-
+                    var report = _nemesysRepository.GetReportByInv(modelToUpdate);
                     _investigationRepository.Update(modelToUpdate);
+
+                    var callbackUrl = Url.Action("Details", "Investigation", new { id = modelToUpdate.Id }, protocol: Request.Scheme);
+
+
+                    // Sending an email to the report owner to alert them of an investigation
+                    _emailSender.SendEmailAsync(
+                    // To
+                        report.User.Email,
+                        // Subject
+                        "Investigation Update Alert!",
+                    // Content
+                        $"Attention {report.User.ReporterAlias}!<br>" +
+                        $"Your report titled '{report.Title}' s Investigation just been updated!<br>" +
+                        $"Investigation ID: {modelToUpdate.Id}<br>" +
+                        $"Go to Investigation via NEMESYS: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{callbackUrl}</a>"
+                    );
                     return RedirectToAction("Index");
                 }
                 else
