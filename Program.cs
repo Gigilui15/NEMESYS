@@ -17,9 +17,12 @@ namespace NEMESYS
             //Services configuration
             var builder = WebApplication.CreateBuilder(args);
 
+            // Registering repositories and services
+            builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
             builder.Services.AddTransient<IEmailSender, EmailSender>();
             builder.Services.AddTransient<IInvestigationRepository, InvestigationsRepository>();
 
+            // Configuring options for email sender
             builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
             //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine
@@ -31,21 +34,19 @@ namespace NEMESYS
                 builder.Configuration.AddJsonFile("appsettings.json", false, true);
                 builder.Configuration.AddJsonFile($"appsettings.{Environment.MachineName}.json", true, true);
             }
-
+            // Configuring Google authentication options
             builder.Services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
             });
 
-            //Configures MVC services, including MvcCore, Authorization, Cors, Data annotations, response formatters, caching, views and razor view engine
-
-            //This service could be varied by environment - passing different connection strings as required
+            // Configuring the database context
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new
                     InvalidOperationException("Connection string for AppDbContext not found")));
 
-            //These are only for illustration purposes only (only use what is required)
+            // Configuring identity services
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -82,10 +83,6 @@ namespace NEMESYS
                 options.SlidingExpiration = true;
 
             });
-
-            //Let's keep it simple for now
-            builder.Services.AddTransient<INEMESYSRepository, NemesysRepository>();
-
 
             builder.Services.AddControllersWithViews();
 

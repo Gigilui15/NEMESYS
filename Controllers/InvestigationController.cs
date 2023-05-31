@@ -12,6 +12,7 @@ using System.Composition;
 
 namespace NEMESYS.Controllers
 {
+    // Controller for handling investigation-related actions
     public class InvestigationController : Controller
     {
         private readonly INEMESYSRepository _nemesysRepository;
@@ -20,7 +21,7 @@ namespace NEMESYS.Controllers
         private readonly ILogger<InvestigationController> _logger;
         private readonly IEmailSender _emailSender;
 
-
+        // Constructor for InvestigationController, injecting dependencies
         public InvestigationController(IInvestigationRepository repo, UserManager<ApplicationUser> userManager, INEMESYSRepository nemesysRepository, IEmailSender mail, ILogger<InvestigationController> logger, IEmailSender emailSender)
         {
             _nemesysRepository = nemesysRepository;
@@ -28,9 +29,9 @@ namespace NEMESYS.Controllers
             _userManager = userManager;
             _logger = logger;
             _emailSender = emailSender;
-
         }
 
+        // Action for the investigation list page
         public IActionResult Index()
         {
             try
@@ -45,21 +46,16 @@ namespace NEMESYS.Controllers
             }
             catch (Exception e)
             {
-
                 _logger.LogError(e.Message);
                 return View("Error");
-
             }
         }
 
-
-
+        // Action for the investigation details page
         public IActionResult Details(int id)
         {
             try
             {
-
-
                 var investigation = _investigationRepository.GetInvestigationById(id);
                 if (investigation == null)
                     return NotFound();
@@ -83,30 +79,30 @@ namespace NEMESYS.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message); return View("Error");
+                _logger.LogError(e.Message);
+                return View("Error");
             }
         }
 
+        // Action for the investigation creation page (GET)
         [HttpGet]
         [Authorize(Roles = "Investigator")]
         public IActionResult Create(int reportId)
         {
-
             var user = _userManager.GetUserAsync(User).Result;
             var roles = _userManager.GetRolesAsync(user).Result;
 
             ViewBag.ReportId = reportId;
             var model = new EditInvestigationViewModel();
             return View(model);
-
         }
 
+        // Action for the investigation creation (POST)
         [HttpPost]
         [Authorize(Roles = "Investigator")]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Content")] EditInvestigationViewModel newInvestigation, [FromForm] int reportId)
         {
-
             if (ModelState.IsValid)
             {
                 Investigation investigation = new Investigation()
@@ -130,7 +126,6 @@ namespace NEMESYS.Controllers
 
                     var callbackUrl = Url.Action("Details", "Investigation", new { id = investigation.Id }, protocol: Request.Scheme);
 
-
                     // Sending an email to the report owner to alert them of an investigation
                     _emailSender.SendEmailAsync(
                         // To
@@ -143,8 +138,6 @@ namespace NEMESYS.Controllers
                         $"Investigation ID: {investigation.Id}<br>" +
                         $"Go to Investigation via NEMESYS: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{callbackUrl}</a>"
                     );
-
-
                 }
 
                 return RedirectToAction("Index");
@@ -155,9 +148,7 @@ namespace NEMESYS.Controllers
             }
         }
 
-
-
-
+        // Action for editing an investigation (GET)
         [HttpGet]
         [Authorize(Roles = "Investigator")]
         public IActionResult Edit(int id)
@@ -178,18 +169,21 @@ namespace NEMESYS.Controllers
                     return View(model);
                 }
                 else
+                {
                     return RedirectToAction("Index");
+                }
             }
             else
+            {
                 return RedirectToAction("Index");
-
+            }
         }
 
+        // Action for editing an investigation (POST)
         [HttpPost]
         [Authorize(Roles = "Investigator")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, [Bind("Content")]
-        EditInvestigationViewModel updatedInvestigation)
+        public IActionResult Edit([FromRoute] int id, [Bind("Content")] EditInvestigationViewModel updatedInvestigation)
         {
             var modelToUpdate = _investigationRepository.GetInvestigationById(id);
             if (modelToUpdate == null)
@@ -198,11 +192,9 @@ namespace NEMESYS.Controllers
             }
 
             var user = _userManager.GetUserAsync(User).Result;
-
             var currentUserId = _userManager.GetUserId(User);
             if (modelToUpdate.UserId == currentUserId)
             {
-
                 if (ModelState.IsValid)
                 {
                     modelToUpdate.Content = updatedInvestigation.Content;
@@ -213,14 +205,13 @@ namespace NEMESYS.Controllers
 
                     var callbackUrl = Url.Action("Details", "Investigation", new { id = modelToUpdate.Id }, protocol: Request.Scheme);
 
-
-                    // Sending an email to the report owner to alert them of an investigation
+                    // Sending an email to the report owner to alert them of an investigation update
                     _emailSender.SendEmailAsync(
-                    // To
+                        // To
                         report.User.Email,
                         // Subject
                         "Investigation Update Alert!",
-                    // Content
+                        // Content
                         $"Attention {report.User.ReporterAlias}!<br>" +
                         $"Your report titled '{report.Title}' s Investigation just been updated!<br>" +
                         $"Investigation ID: {modelToUpdate.Id}<br>" +
@@ -237,10 +228,9 @@ namespace NEMESYS.Controllers
             {
                 return RedirectToAction("Index");
             }
-
-
         }
 
+        // Action for deleting an investigation
         public IActionResult Delete(int id)
         {
             var investigation = _investigationRepository.GetInvestigationById(id);
@@ -261,8 +251,4 @@ namespace NEMESYS.Controllers
             return RedirectToAction("Index");
         }
     }
-
-    }
-    
-
-
+}
