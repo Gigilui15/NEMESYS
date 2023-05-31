@@ -35,7 +35,7 @@ namespace NEMESYS.Models.Repositories
         {
             try
             {
-                return _appDbContext.Reports.Include(b => b.Category).Include(b => b.Investigation).FirstOrDefault(b => b.Id == ReportId);
+                return _appDbContext.Reports.Include(b => b.Category).Include(b => b.Investigation).Include(b => b.User).FirstOrDefault(b => b.Id == ReportId);
             }
             catch (Exception ex)
             {

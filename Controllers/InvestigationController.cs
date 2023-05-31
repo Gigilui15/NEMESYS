@@ -17,14 +17,16 @@ namespace NEMESYS.Controllers
         private readonly IInvestigationRepository _investigationRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<InvestigationController> _logger;
+        private readonly IEmailSender _emailSender;
 
 
-        public InvestigationController(IInvestigationRepository repo, UserManager<ApplicationUser> userManager, INEMESYSRepository nemesysRepository, IEmailSender mail, ILogger<InvestigationController> logger)
+        public InvestigationController(IInvestigationRepository repo, UserManager<ApplicationUser> userManager, INEMESYSRepository nemesysRepository, IEmailSender mail, ILogger<InvestigationController> logger, IEmailSender emailSender)
         {
             _nemesysRepository = nemesysRepository;
             _investigationRepository = repo;
             _userManager = userManager;
             _logger = logger;
+            _emailSender = emailSender;
 
         }
 
@@ -103,19 +105,15 @@ namespace NEMESYS.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Content")] EditInvestigationViewModel newInvestigation, [FromForm] int reportId)
         {
-            var user = _userManager.GetUserAsync(User).Result;
-            var roles = _userManager.GetRolesAsync(user).Result;
 
             if (ModelState.IsValid)
             {
                 Investigation investigation = new Investigation()
                 {
-
                     Content = newInvestigation.Content,
                     CreatedDate = DateTime.UtcNow,
                     UserId = _userManager.GetUserId(User),
                     UpdatedDate = DateTime.UtcNow,
-
                 };
                 var report = _nemesysRepository.GetReportById(reportId);
 
@@ -123,31 +121,40 @@ namespace NEMESYS.Controllers
                 {
                     return NotFound();
                 }
-
-
                 else
                 {
                     _investigationRepository.Create(investigation);
                     report.InvestigationId = investigation.Id;
                     _nemesysRepository.UpdateReportPost(report);
 
-                    var callbackUrl = Url.Page(
-                        "/Investigation/Details",
-                        pageHandler: null,
-                        values: new { id = investigation.Id },
-                        protocol: Request.Scheme);
+                    var callbackUrl = Url.Action("Details", "Investigation", new { id = investigation.Id }, protocol: Request.Scheme);
+                    
 
+                    // Sending an email to the report owner to alert them of an investigation
+                    _emailSender.SendEmailAsync(
+                        // To
+                        report.User.Email,
+                        // Subject
+                        "Investigation Alert!",
+                        // Content
+                        $"Attention {report.User.ReporterAlias}! " +
+                        $"\n Your report titled '{report.Title}' has just been investigated! " +
+                        $"Investigation ID: {investigation.Id} \n " +
+                        $"Go to Investigation via NEMESYS: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{callbackUrl}</a>"
+                    );
                 }
+
                 return RedirectToAction("Index");
             }
             else
             {
                 return View(newInvestigation);
             }
-
-
-
         }
+
+
+
+
         [HttpGet]
         [Authorize(Roles = "Investigator")]
         public IActionResult Edit(int id)
